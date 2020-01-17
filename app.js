@@ -83,7 +83,7 @@ app.post("/upload", (req, res) => {
       let fileName = generateUniqueFilename(UPLOADS_DIR, extension);
       image.mv(UPLOADS_DIR + "/" + fileName + extension);
 
-      res.status(200).send({
+      res.status(201).send({
         fileName: fileName + extension
       });
     }
