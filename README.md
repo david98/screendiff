@@ -12,7 +12,8 @@ Run `node app.js` to start the web service.
 
 ## Uploading an image to be compared with another
 
-Send a `POST` request to `http://localhost:8082/upload` . The body should be formatted as `multipart/form-data` with a field named `image` containing the image file.
+Send a `POST` request to `http://localhost:8082/upload` . The body should be formatted as `multipart/form-data`
+with a field named `image` containing the image file.
 
 The response to a correct request is a JSON:
 

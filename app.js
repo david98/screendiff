@@ -11,8 +11,13 @@ const uuidv1 = require("uuid/v1");
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
+// Config
 const UPLOADS_DIR = "./uploads";
 const OUTPUTS_DIR = "./outputs";
+
+const RESULT_EXTENSION = ".png";
+
+const PORT = 8082;
 
 let app = express();
 
@@ -57,8 +62,6 @@ async function getDiff(firstImagePath, secondImagePath) {
     ignore: "antialiasing"
   };
 
-  // The parameters can be Node Buffers
-  // data is the same as usual with an additional getBuffer() function
   const data = await compareImages(
     await readFileAsync(firstImagePath),
     await readFileAsync(secondImagePath),
@@ -80,7 +83,6 @@ app.post("/upload", (req, res) => {
       let fileName = generateUniqueFilename(UPLOADS_DIR, extension);
       image.mv(UPLOADS_DIR + "/" + fileName + extension);
 
-      //send response
       res.status(200).send({
         fileName: fileName + extension
       });
@@ -89,12 +91,6 @@ app.post("/upload", (req, res) => {
     console.log(err);
     res.status(500).send(err);
   }
-});
-
-let server = app.listen(8082, function() {
-  let host = server.address().address;
-  let port = server.address().port;
-  console.log("Screendiff listening at http://%s:%s", host, port);
 });
 
 app.post("/compare", async (req, res) => {
@@ -114,13 +110,15 @@ app.post("/compare", async (req, res) => {
         UPLOADS_DIR + "/" + req.body.first,
         UPLOADS_DIR + "/" + req.body.second
       );
-      let extension = ".png";
-      let fileName = generateUniqueFilename(OUTPUTS_DIR + "/", extension);
+      let fileName = generateUniqueFilename(
+        OUTPUTS_DIR + "/",
+        RESULT_EXTENSION
+      );
       await writeFileAsync(
-        OUTPUTS_DIR + "/" + fileName + extension,
+        OUTPUTS_DIR + "/" + fileName + RESULT_EXTENSION,
         data.getBuffer()
       );
-      data["resultFile"] = fileName + extension;
+      data["resultName"] = fileName + RESULT_EXTENSION;
       res.status(200).send(data);
     }
   } else {
@@ -128,12 +126,48 @@ app.post("/compare", async (req, res) => {
   }
 });
 
-app.get("/result", async (req, res) => {
-  let fileName = req.query.name;
+app.get("/result/:name", (req, res) => {
+  let fileName = req.params.name + RESULT_EXTENSION;
   if (fs.existsSync(OUTPUTS_DIR + "/" + fileName)) {
-    res.download(OUTPUTS_DIR + "/" + fileName);
     res.status(200);
+    res.download(OUTPUTS_DIR + "/" + fileName);
   } else {
     res.status(404).send({ error: "Invalid result name." });
   }
+});
+
+app.delete("/result/:name", (req, res) => {
+  let fileName = req.params.name + RESULT_EXTENSION;
+  if (fs.existsSync(OUTPUTS_DIR + "/" + fileName)) {
+    fs.unlinkSync(OUTPUTS_DIR + "/" + fileName);
+    res.status(204).send({});
+  } else {
+    res.status(404).send({ error: "Invalid result name." });
+  }
+});
+
+app.get("/upload/:name", (req, res) => {
+  let fileName = req.params.name;
+  if (fs.existsSync(UPLOADS_DIR + "/" + fileName)) {
+    res.status(200);
+    res.download(UPLOADS_DIR + "/" + fileName);
+  } else {
+    res.status(404).send({ error: "Invalid result name." });
+  }
+});
+
+app.delete("/upload/:name", (req, res) => {
+  let fileName = req.params.name;
+  if (fs.existsSync(UPLOADS_DIR + "/" + fileName)) {
+    fs.unlinkSync(UPLOADS_DIR + "/" + fileName);
+    res.status(204).send({});
+  } else {
+    res.status(404).send({ error: "Invalid result name." });
+  }
+});
+
+let server = app.listen(PORT, function() {
+  let host = server.address().address;
+  let port = server.address().port;
+  console.log("Screendiff listening at http://%s:%s", host, port);
 });
