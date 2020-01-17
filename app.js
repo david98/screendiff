@@ -118,7 +118,7 @@ app.post("/compare", async (req, res) => {
         OUTPUTS_DIR + "/" + fileName + RESULT_EXTENSION,
         data.getBuffer()
       );
-      data["resultName"] = fileName + RESULT_EXTENSION;
+      data["resultName"] = fileName;
       res.status(200).send(data);
     }
   } else {

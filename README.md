@@ -56,12 +56,24 @@ The response to a correct request will be a JSON like the following:
     "right": 4497
   },
   "analysisTime": 2416,
-  "resultFile": "fdd530c0-379a-11ea-9bbd-25f0de585d63.png"
+  "resultName": "fdd530c0-379a-11ea-9bbd-25f0de585d63"
 }	
 ```
 
-Take note of `resultFile`, you will need it in case you want to retrieve a visual representation of the comparison result.
+Take note of `resultName`, you will need it in case you want to retrieve a visual representation of the comparison result.
 
 ## Get a visual representation of the result
 
-Just browse `http://localhost:8082/result?name=fdd530c0-379a-11ea-9bbd-25f0de585d63.png` to download the image.
+Just browse `http://localhost:8082/result/(resultName)` to download the image.
+
+## Delete a result
+
+Send a `DELETE` request to `http://localhost:8082/result/(resultName)`.
+
+## Get an uploaded image
+
+Just browse `http://localhost:8082/upload/(image file name, including extension)` to download the image.
+
+## Delete an uploaded image
+
+Send a `DELETE` request to `http://localhost:8082/upload/(image file name, including extension)`.
