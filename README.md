@@ -66,7 +66,7 @@ Take note of `resultName`, you will need it in case you want to retrieve a visua
 
 Just browse `http://localhost:8082/result/(resultName)` to download the image.
 
-## Delete a result
+## Delete a result
 
 Send a `DELETE` request to `http://localhost:8082/result/(resultName)`.
 
