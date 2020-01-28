@@ -1,6 +1,13 @@
 # Setup
 
-## Requirements
+## Docker container
+
+1. `docker pull davidevolta/screendiff`
+2. `docker run -d --name screendiff -p 8082:8082 davidevolta/screendiff:stable`
+
+## Manual
+
+### Requirements
 
 * NodeJS 13+
 * npm (or yarn)
