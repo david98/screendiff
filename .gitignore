@@ -111,3 +111,4 @@ uploads/
 outputs/
 original.png
 tampered.png
+.DS_Store
