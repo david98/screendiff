@@ -1,7 +1,7 @@
 {
   "name": "screendiff",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "license": "MIT",
   "dependencies": {
     "busboy": "^0.3.1",
@@ -12,5 +12,12 @@
     "prettier": "^1.19.1",
     "resemblejs": "^3.2.3",
     "uuid": "^3.3.3"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }
