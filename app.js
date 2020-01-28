@@ -31,6 +31,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// create folders
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR);
+}
+
+if (!fs.existsSync(OUTPUTS_DIR)) {
+  fs.mkdirSync(OUTPUTS_DIR);
+}
+
 function generateUniqueFilename(path, extension) {
   let fileName = uuidv1();
   while (fs.existsSync(path + fileName + extension)) {
