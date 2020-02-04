@@ -43,8 +43,6 @@ Send a `POST` request to `http://localhost:8082/compare`. The body should be a J
 }
 ```
 
-`first` and `second` are the names of the two previously uploaded images to be compared.
-
 The response to a correct request will be a JSON like the following:
 
 ```json

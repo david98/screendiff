@@ -91,7 +91,7 @@ let addRoutes = app => {
   app.post('/compare', async (req, res) => {
     if (req.body.first && req.body.second) {
       let firstPath = UPLOADS_DIR + '/' + req.body.first
-      let secondPath = UPLOADS_DIR + '/' + req.body.path
+      let secondPath = UPLOADS_DIR + '/' + req.body.second
 
       try {
         let data = await getDiff(firstPath, secondPath)
